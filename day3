@@ -1,0 +1,355 @@
+exit
+podman
+git config --global credential.helper cache
+lab-configure 
+git clone  https://github.com/venkatnitya/DO180-apps.git
+cd DO180-apps/
+git status
+git checkout -b testapps
+git status
+echo DO180 >test
+git status
+git add .
+git status
+git commit -m 'first'
+git status
+git push --set-upstream origin testapps
+git status
+cd 
+podman images
+podman info
+#podman run -d --name myssql registry.redhat.io/rhel8/mysql-80
+podman images
+podman run -d --name myssql registry.redhat.io/rhel8/mysql-80
+podman login registry.redhat.io
+podman run -d --name myssql registry.redhat.io/rhel8/mysql-80
+podman ps
+podman ps -a
+podman logs mysql
+podman logs myssql
+podman rm myssql
+podman run -d --name myssql -e MYSQL_USER=venkat -e MYSQL_PASSWORD=redhat123 -e MYSQL_DATABASE=mydb -e MYSQL_ROOT_PASSWORD=redhat321 registry.redhat.io/rhel8/mysql-80
+podman ps
+podman exec -it myssql /bin/bash
+history 
+lab manage-lifecycle start
+podman login registry.redhat.io
+podman run --name mysql -d -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_DATABASE=items -e MYSQL_ROOT_PASSWORD=r00tpa55 registry.redhat.io/rhel8/mysql-80:1
+podman ps
+podman cp ~/DO180/labs/manage-lifecycle/db.sql mysql:/
+podman exec mysql /bin/bash -c 'mysql -uuser1 -pmypa55 items < /db.sql'
+#podman exec mysql /bin/bash -c 'mysql -uuser1 -pmypa55 -e "select * from items.Projects;"'
+podman exec -it mysql /bin/bash
+semanage fcontext -l | grep -i container
+sudo semanage fcontext -l | grep -i container
+lab manage-storage start
+podman ps
+podman exec -it mysql /bin/bash
+lab manage-lifecycle finish
+lab manage-storage start
+mkdir -vp /home/student/local/mysql
+ls -ldZ /home/student/local/mysql
+semanage fcontext -a -t container_file_t '/home/student/local/mysql(/.*)?'
+sudo semanage fcontext -a -t container_file_t '/home/student/local/mysql(/.*)?'
+sudo restorecon -R /home/student/local/mysql/
+ls -ldZ /home/student/local/mysql/
+ls -ldZ /home/student/local
+ls -ldZ /home/student/local/mysql/
+history 
+#podman run --name mysql -d -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_DATABASE=items -e MYSQL_ROOT_PASSWORD=r00tpa55 -v /home/student/local/mysql: registry.redhat.io/rhel8/mysql-80:1
+podman images
+podman pull registry.redhat.io/rhel8/mysql-80:1
+podman inspect registry.redhat.io/rhel8/mysql-80:1
+podman inspect registry.redhat.io/rhel8/mysql-80:1 | less
+podman run --name mysql -d -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_DATABASE=items -e MYSQL_ROOT_PASSWORD=r00tpa55 -v /home/student/local/mysql:/var/lib/mysql/data registry.redhat.io/rhel8/mysql-80:1
+podman ps
+ls -ldZ local/mysql/
+ls -ldZ local/mysql/items/
+podman unshare ls -ldZ local/mysql/items/
+podman inspect registry.redhat.io/rhel8/mysql-80:1 | less
+podman unshare chown 27:27 /home/student/local/mysql/
+history 
+lab manage-storage finish
+cat /etc/containers/registries.conf
+podman info
+vim Containerfile
+podman search ubi8
+vim index.html
+vim Containerfile
+cat Containerfile 
+podman build -t mywebimg .
+vim Containerfile
+podman build -t mywebimg .
+podman search ubi8
+podman search fedora
+vim Containerfile
+podman build -t mywebimg .
+podman images
+podman rmi 536e7d5c798c
+podman images
+podman inspect mywebimg:latest 
+podman run -rm --name mytest mywebimage curl localhost
+podman run -it --name mytest mywebimage curl localhost
+podman images
+podman run -it --name mytest mywebimg curl localhost
+podman run -d mywebimg
+podman ps
+podman exec -it pedantic_darwin /bin/bash
+podman stop pedantic_darwin
+podman rm pedantic_darwin
+cat Containerfile 
+podman image
+podman images
+podman tag localhost/mywebimg:latest registry.lab.example.com/venkat/myhttpd:1.0
+podman images
+podman push registry.lab.example.com/venkat/myhttpd:1.0
+podman save -o myhttpd.tar registry.lab.example.com/venkat/myhttpd:1.0
+podman diff registry.lab.example.com/venkat/myhttpd:1.0
+history 
+cat Containerfile 
+podman images
+podman ps
+podman rmi *
+podman rmi --all
+podman rmi --all --force
+podman images
+ll
+podman load -i myhttpd.tar 
+podman images
+history 
+podman images
+podman --help
+podman build --help | more
+lab openshift-resources start
+oc whoami
+cat /usr/local/etc/ocp4.config 
+oc logout
+oc whoami
+oc login -u suzpil -p b2aaef54d66f40c2b0b5 https://api.ap410.prod.ole.redhat.com:6443
+oc whoami
+oc project
+oc new-project myclass
+oc project
+kubectl --help
+kubectl create --help
+kubectl create namespace testk8s
+oc project
+oc new-app --name testapp --image openshift/hello-openshift
+oc get all
+history 
+oc get all
+oc describe is testapp 
+oc get image | grep -i hello
+oc get images
+history 
+cat /usr/local/etc/ocp4.config 
+oc get all
+oc describe is testapp 
+oc get image
+oc get deployment
+oc describe deployment testapp 
+oc get pods
+oc scale deployment/testapp --replicas=5
+oc get pods
+oc describe deployment testapp 
+oc scale deployment/testapp --replicas=3
+oc describe deployment testapp 
+oc get replicasets.apps 
+oc get dc
+oc get rc
+oc get pod
+oc get pod -o wide
+oc scale deployment/testapp --replicas=10
+oc get pod -o wide
+oc get nodes
+oc describe pod testapp-58cc4775c5-
+oc describe pod testapp-58cc4775c5-5kct9 
+oc get svc
+curl 172.30.30.118
+curl 172.30.30.118:8080
+oc get pod -o wide
+curl 10.131.1.167
+oc get svc
+oc expose svc/testapp
+oc get route
+curl testapp-myclass.apps.ap410.prod.ole.redhat.com
+oc delete route testapp 
+oc expose svc/testapp --hostname=hello.apps.ap410.prod.ole.redhat.com
+curl hello.apps.ap410.prod.ole.redhat.com
+history 
+oc get deployment testapp -o yaml
+oc get deployment testapp -o yaml >hello-dc.yaml
+less hello-dc.yaml 
+vim hello-dc.yaml 
+oc get all
+oc delete all --all
+oc delete all -l app=testapp
+oc delete project myclass
+oc project
+oc new-project venkat
+oc project
+oc whoami
+ll
+cat hello-dc.yaml 
+oc create -f hello-dc.yaml 
+vim hello-dc.yaml 
+cat hello-dc.yaml 
+oc create -f hello-dc.yaml 
+oc get all
+cat hello-dc.yaml 
+vim nginx-service.yaml
+cat nginx-service.yaml 
+oc create -f nginx-service.yaml 
+oc get all
+oc logs nginx-deployment-9456bbbf9-wrf4s
+oc create sa venkat-sa
+oc adm policy add-scc-to-user anyuid -z venkat-sa
+history 
+cat hello-dc.yaml 
+cat nginx-service.yaml 
+oc delete all --all
+cp hello-dc.yaml venkat-dc.yaml
+vim venkat-dc.yaml 
+cp nginx-service.yaml venkat-svc.yaml
+vim venkat-svc.yaml 
+cat venkat-dc.yaml 
+cat venkat-svc.yaml 
+oc create -f venkat-dc.yaml 
+oc get pods
+oc create -f venkat-svc.yaml 
+oc get all
+oc expose svc/hello 
+oc get route
+oc project
+curl hello-venkat.apps.ap410.prod.ole.redhat.com
+cat venkat-dc.yaml 
+skopeo inspect docker://gcr.io/google-samples/hello-app:1.0
+oc edit deployment hello-deployment 
+oc edit svc hello 
+oc get svc
+curl hello-venkat.apps.ap410.prod.ole.redhat.com
+oc get pods
+oc exec pod hello-deployment-67bcd79b89-4sqx7 /bin/bash
+oc exec hello-deployment-67bcd79b89-4sqx7 /bin/bash
+oc exec hello-deployment-67bcd79b89-4sqx7 -- bash
+oc exec hello-deployment-67bcd79b89-4sqx7 -- /bin/bash
+oc exec hello-deployment-67bcd79b89-4sqx7 -- curl localhost
+oc exec hello-deployment-67bcd79b89-4sqx7 -- cat /var/www/html/index.html
+oc exec hello-deployment-67bcd79b89-4sqx7 -- ls
+oc exec --help
+oc exec hello-deployment-67bcd79b89-4sqx7 -it -- curl localhost
+oc exec hello-deployment-67bcd79b89-4sqx7 -it -- ls -l /var/www/html/
+oc exec hello-deployment-67bcd79b89-4sqx7 -it -- pwd
+oc exec hello-deployment-67bcd79b89-4sqx7 -it -- bash -il
+history 
+oc edit deployment hello-deployment 
+oc get pods
+oc get route
+oc edit svc hello 
+oc get route
+oc delete routes.route.openshift.io hello 
+oc expose svc/hello 
+oc get route
+curl hello-venkat.apps.ap410.prod.ole.redhat.com
+history 
+oc get all
+curl hello-venkat.apps.ap410.prod.ole.redhat.com
+history 
+cat venkat-dc.yaml 
+cat venkat-svc.yaml 
+oc get all
+oc project
+oc delete all --all
+vim hello-dc.yaml 
+ll
+cat venkat-dc.yaml 
+vim venkat-dc.yaml 
+vim venkat-svc.yaml 
+oc create -f venkat-dc.yaml 
+oc create -f venkat-svc.yaml 
+oc get all
+cat venkat-dc.yaml 
+oc delete all --all
+vim venkat-dc.yaml 
+cat venkat-dc.yaml
+vim venkat-svc.yaml 
+oc create -f venkat-dc.yaml 
+oc create -f venkat-svc.yaml 
+oc get all
+oc expose svc/hello 
+oc get route
+curl hello-venkat.apps.ap410.prod.ole.redhat.com
+oc get all
+oc get pod --all-namespaces | grep router
+skopeo inspect docker://quay.io/redhattraining/php-hello-dockerfile
+oc get is -n openshift
+lab openshift-s2i start
+ls-l DO180-apps/
+tree DO180-apps/
+cd DO180-apps/
+ll
+cd php-helloworld/
+ls
+cat index.php 
+pwd
+cd 
+cd DO180-apps/
+git status
+git checkout master 
+git status
+git checkout -b s2i
+git status
+git push -u origin s2i
+tree
+git status
+git push -u origin s2i
+cd 
+git clone https://github.com/venkatnitya/DO180-apps.git
+ll
+tree DO180
+tree DO180-apps/
+cd DO180-apps/
+git push -u origin s2i
+git status
+cd 
+rm -rf DO180-apps/
+git clone https://github.com/venkatnitya/DO180-apps.git
+cd DO180-apps/
+ll
+git status
+git checkout s2i
+git status
+git push -u origin s2i
+cat php-helloworld/
+cat php-helloworld/index.php 
+oc whoami
+oc new-project suzpil-s2i
+oc new-app php:7.3 --name=php-helloworld https://github.com/venkatnitya/DO180-apps#s2i --context-dir php-helloworld
+oc get pods
+oc get all
+oc logs --all-containers -f php-helloworld-1-build
+oc get svc
+oc expose svc php-helloworld 
+oc get route
+oc get svc php-helloworld -o yaml
+oc get route
+oc get svc
+curl php-helloworld-suzpil-s2i.apps.ap410.prod.ole.redhat.com
+vim php-helloworld/index.php 
+git statuss
+git status
+git add .
+git status
+git commit -a "my new update"
+git commit -m "my new update"
+git status
+git push origin s2i
+oc get bc
+oc start-build php-helloworld
+oc get bc
+oc get deployment
+oc get pods
+oc get all
+curl php-helloworld-suzpil-s2i.apps.ap410.prod.ole.redhat.com
+history 
+history -w day3
