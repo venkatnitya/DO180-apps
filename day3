@@ -353,3 +353,172 @@ oc get all
 curl php-helloworld-suzpil-s2i.apps.ap410.prod.ole.redhat.com
 history 
 history -w day3
+git add .
+git commit -m 'history'
+git push origin s2i
+history 
+oc whoami
+oc new-project lifecycle
+oc new-app -h | more
+#oc new-app --name hello --image openshift/hello-openshift
+oc get is
+oc get image
+oc new-app --name hello --image openshift/hello-openshift
+oc get all
+oc expose svc/hello
+oc get route
+oc delete routes.route.openshift.io hello
+oc get route
+oc expose svc/hello --hostname=support.apps.ap410.prod.ole.redhat.com
+curl support.apps.ap410.prod.ole.redhat.com
+history 
+oc delete all --all
+oc new-app mysql -e MYSQL_USER=nitya -e MYSQL_PASSWORD=redhat23 -e MYSQL_DATABASE=mydb -e MYSQL_ROOT_PASSWORD=redhat321
+oc get all
+oc describe deployment mysql
+oc get pod
+oc describe pod mysql-569568bf8d-zkvj4 
+oc scale deploymentconfig mysql --replicas=5
+oc scale deployment mysql --replicas=5
+oc get pod
+oc describe pod mysql-569568bf8d-fnmlm 
+oc delete all --all
+oc get all
+oc new-app --name prod1DB postgres
+oc new-app --name proddb1 postgres
+oc get pods
+oc get pod -w
+oc logs proddb1-59d48df574-djhjs
+oc delete all --all
+oc new-app --name proddb1 mysql
+oc get pods
+oc logs proddb1-bc8c67d58-bdzxq 
+oc create secret generic --help | more
+oc create secret generic mydbsecret --from-literal=user=nitya --from-literal=password=redhat123 --from-literal=database=myowndb --from-literal=root_password=redhat321
+oc get secrets 
+oc describe secrets mydbsecret 
+oc set env deployment --help | more
+oc get deployment
+oc set env deployment proddb1 --from=secret/mydbsecret --prefix=MYSQL_
+oc get deployment
+oc describe deployment proddb1 
+oc get deployment proddb1 -o yaml
+oc get nodes
+oc debug node/ap410-4nmcs-master-0
+sudo -i
+oc whoami
+cat /usr/local/etc/ocp4.config 
+oc loin -u suzpil -p b2aaef54d66f40c2b0b5 https://api.ap410.prod.ole.redhat.com:6443
+oc login -u suzpil -p b2aaef54d66f40c2b0b5 https://api.ap410.prod.ole.redhat.com:6443
+oc project
+oc get route -n openshift-console
+cd Downloads/
+ll
+oc project
+oc project project4
+oc get all
+oc get pods -o wide
+oc describe po example-845d5478d-94ddp 
+vim service-example.yaml 
+oc create -f service-example.yaml 
+oc get svc
+oc expose svc/example
+oc get route
+curl example-project4.apps.ap410.prod.ole.redhat.com
+curl example-project4.apps.ap410.prod.ole.redhat.com:8080
+oc delete route example 
+oc delete svc example 
+oc get pods
+oc rsh example-845d5478d-94ddp 
+oc get route -n openshift-console
+oc whoami -t console
+oc whoami --help
+oc whoami --show-console
+oc get route -n openshift-console
+oc get projects
+cd
+lab multicontainer-design start
+podman login registry.redhat.io
+ip a
+cd DO180/labs/multicontainer-design/deploy/nodejs/nodejs-source/models/
+ll
+cat db.js 
+pwd
+cd ../..
+ls
+cat build.sh 
+cat /usr/local/etc/ocp4.config 
+cat Containerfile 
+./build.sh 
+podman images
+ll
+cd networked/
+ll
+cat run.sh 
+ll
+cat run.sh 
+vim run.sh 
+ll
+./run.sh 
+podman ps
+lab multicontainer-design finish
+cd 
+cd Downloads/
+ll
+cat service-example.yaml 
+oc project
+oc get svc
+ll
+cat deployment-example.yaml 
+oc create -f deployment-example.yaml 
+oc get all
+oc create -f service-example.yaml 
+oc describe svc example 
+oc get svc example -o yaml
+cd
+lab multicontainer-application start
+cd DO180/labs/multicontainer-application/
+ll
+cat todo-app.yml 
+oc get pv
+cat todo-app.yml 
+oc create -f todo-app.yml 
+oc get pvc
+lab multicontainer-application finish
+cd 
+oc get template -n openshift
+oc get templates
+oc get templates -n openshift | less
+oc get templates -n openshift | grep mysql
+oc get templates -n openshift | grep mysql-persistent
+oc get template mysql-persistent -n openshift -o yaml | less
+oc process --parameters --help | more
+oc get template mysql-persistent -n openshift
+oc  process --parameters mysql-persistent -n openshift
+podman search mysql
+podman ps
+podman pod pss
+podman pod ps
+podman ps
+podman pod ps
+podman create pod --help | more
+podman create pod --help
+podman pod create --help | more
+podman pod create --name wordpress -p 8080:80
+podman pod ps
+podman ps
+podman run -d --restart=always --pod wordpress -e MYSQL_ROOT_PASSWORD=redhat321 -e MYSQL_DATABASE=mydb -e MYSQL_USER=user1 -e MYSQL_PASSWORD=redhat123 --name=wp-db docker.io/library/mariadb:latest
+podman ps
+podman pod ps
+podman run -d --restart=always --pod wordpress -e WORDPRESS_DB_NAME=mydb -e WORDPRESS_DB_USER=user1 -e WORDPRESS_DB_PASSWORD=redhat123 -e WORDPRESS_DB_HOST="127.0.0.1" --name wp docker.io/library/wordpress:latest
+history 
+od wordpress -e WORDPRESS_DB_NAME=mydb -e WORDPRESS_DB_USER=user1 -e WORDPRESS_DB_PASSWORD=redhat123 -e WORDPRESS_DB_HOST="127.0.0.1" \
+-restart=always --pod wordpress -e WORDPRESS_DB_NAME=mydb -e WORDPRESS_DB_USER=user1 -e WORDPRESS_DB_PASSWORD=redhat123 -e WORDPRESS_DB_HOST="127.0.0.1" \
+history 
+podman pod ps
+podman ps
+ll
+cat Containerfile 
+cat venkat-dc.yaml 
+history 
+history -w day1_4
